@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.10-SNAPSHOT'
+	id 'fabric-loom' version '1.3-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -11,14 +11,32 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
-	// Add repositories to retrieve artifacts from in here.
-	// You should only use this when depending on other mods because
-	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
-	//
 	maven { url "https://maven.shedaniel.me/" }
-	maven { url "https://maven.terraformersmc.com/" }
-	maven { url "https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api" }
+	maven { url "https://maven.terraformersmc.com/releases/" }
+
+}
+loom {
+	runs {
+		datagen {
+			inherit server
+			name "Data Generation"
+			vmArg "-Dfabric-api.datagen"
+			vmArg "-Dfabric-api.datagen.output-dir=${file("src/main/generated")}"
+			vmArg "-Dfabric-api.datagen.modid=retroitems"
+
+			runDir "build/datagen"
+		}
+	}
+}
+
+sourceSets {
+	main {
+		resources {
+			srcDirs += [
+					'src/main/generated'
+			]
+		}
+	}
 }
 
 dependencies {
@@ -30,11 +48,7 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	modApi("me.shedaniel.cloth:cloth-config-fabric:${project.clothconfig_version}") {
-		exclude(group: "net.fabricmc.fabric-api")
-	}
-
-	modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}") {
+	modApi("me.shedaniel.cloth:cloth-config-fabric:11.1.106") {
 		exclude(group: "net.fabricmc.fabric-api")
 	}
 }

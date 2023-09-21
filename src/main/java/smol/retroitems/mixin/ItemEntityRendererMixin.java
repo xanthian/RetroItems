@@ -44,7 +44,7 @@ public abstract class ItemEntityRendererMixin extends EntityRenderer<ItemEntity>
         //Shadows
         this.shadowRadius = RetroItems.CONFIG.shadows ? 0.15F : 0.0F;
 
-        BakedModel bakedModel = this.itemRenderer.getModel(itemStack, itemEntity.world, null, 0);
+        BakedModel bakedModel = this.itemRenderer.getModel(itemStack, itemEntity.getWorld(), null, 0);
         boolean hasDepth = bakedModel.hasDepth() && !RetroItems.CONFIG.blocksFlat;
 
         //Hovering
